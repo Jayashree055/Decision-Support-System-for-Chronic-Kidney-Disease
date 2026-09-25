@@ -1,4 +1,9 @@
 {
+  "name": "nefroai-backend",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "axios": "^1.20.0",
     "cors": "^2.8.6",
