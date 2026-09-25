@@ -1,5 +1,21 @@
 import { useState } from "react";
 import axios from "axios";
+import RiskScorePanel, { ScreeningExplanation } from "./RiskScorePanel";
+
+const API_URL = "http://localhost:5000/api";
+
+function describeError(err) {
+    const data = err.response?.data;
+
+    if (data?.fields) {
+        return Object.entries(data.fields)
+            .map(([field, message]) => `${field}: ${message}`)
+            .join(" ");
+    }
+
+    return data?.message ||
+        "Unable to reach the server. Please make sure the backend servers are running.";
+}
 
 function CKDAssessment() {
     const [formData, setFormData] = useState({
@@ -13,6 +29,8 @@ function CKDAssessment() {
     });
 
     const [result, setResult] = useState(null);
+    const [risk, setRisk] = useState(null);
+    const [screeningError, setScreeningError] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -28,32 +46,42 @@ function CKDAssessment() {
 
         setLoading(true);
         setError("");
+        setScreeningError("");
         setResult(null);
+        setRisk(null);
 
+        const payload = {
+            age: Number(formData.age),
+            gender: formData.gender,
+            bp_systolic: Number(formData.bp_systolic),
+            bp_diastolic: Number(formData.bp_diastolic),
+            serum_creatinine: Number(formData.serum_creatinine),
+            albumin_creatinine_ratio:
+                Number(formData.albumin_creatinine_ratio),
+            diabetes_diagnosed:
+                Number(formData.diabetes_diagnosed)
+        };
+
+        // The risk score does not depend on the ML model, so show it even
+        // when screening fails.
         try {
-            const response = await axios.post(
-                "http://localhost:5000/api/predict-ckd",
-                {
-                    age: Number(formData.age),
-                    gender: formData.gender,
-                    bp_systolic: Number(formData.bp_systolic),
-                    bp_diastolic: Number(formData.bp_diastolic),
-                    serum_creatinine: Number(formData.serum_creatinine),
-                    albumin_creatinine_ratio:
-                        Number(formData.albumin_creatinine_ratio),
-                    diabetes_diagnosed:
-                        Number(formData.diabetes_diagnosed)
-                }
-            );
+            const [screening, riskScore] = await Promise.allSettled([
+                axios.post(`${API_URL}/predict-ckd`, payload),
+                axios.post(`${API_URL}/risk-score`, payload)
+            ]);
 
-            setResult(response.data);
+            if (screening.status === "fulfilled") {
+                setResult(screening.value.data);
+            } else {
+                setScreeningError(describeError(screening.reason));
+            }
 
-        } catch (err) {
-            console.error(err);
+            if (riskScore.status === "fulfilled") {
+                setRisk(riskScore.value.data);
+            } else {
+                setError(describeError(riskScore.reason));
+            }
 
-            setError(
-                "Unable to get prediction. Please make sure the backend servers are running."
-            );
         } finally {
             setLoading(false);
         }
@@ -166,6 +194,10 @@ function CKDAssessment() {
                 <p>{error}</p>
             )}
 
+            {screeningError && (
+                <p>Screening model: {screeningError}</p>
+            )}
+
            {result && (
             <div>
                 <h2>Assessment Result</h2>
@@ -193,8 +225,12 @@ function CKDAssessment() {
                     eGFR is an estimate of kidney function calculated from
                     age, sex, and serum creatinine.
                 </small>
+
+                <ScreeningExplanation explanation={result.explanation} />
             </div>
         )}
+
+            {risk && <RiskScorePanel risk={risk} />}
         </div>
     );
 }
