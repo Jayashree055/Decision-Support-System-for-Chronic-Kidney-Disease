@@ -1,5 +1,8 @@
-flask
-pandas
-numpy
-scikit-learn
-joblib
+# Python 3.11 or older: the saved screening model was pickled with
+# scikit-learn 1.2.2 and does not load on newer versions.
+flask>=2.3,<4
+pandas>=1.5,<2.1
+numpy>=1.23,<2
+scikit-learn==1.2.2
+joblib>=1.2,<2
+shap>=0.44,<0.47
