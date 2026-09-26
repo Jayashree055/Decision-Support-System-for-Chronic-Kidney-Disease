@@ -1,42 +1,129 @@
 const express = require("express");
-const axios = require("axios");
+const mongoose = require("mongoose");
 const cors = require("cors");
+const axios = require("axios");
+require("dotenv").config();
+
+const patientRoutes = require("./routes/patients");
 
 const app = express();
 
+
+// ============================================
+// MIDDLEWARE
+// ============================================
+
 app.use(cors());
 app.use(express.json());
-app.post("/api/predict-ckd", async (req, res) => {
-    try {
-        const patientData = req.body;
 
-        console.log("Received patient data:", patientData);
 
-        // Send patient data to Flask ML API
-        const response = await axios.post(
-            "http://127.0.0.1:5001/predict",
-            patientData
+// ============================================
+// MONGODB CONNECTION
+// ============================================
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log("MongoDB connected successfully");
+    })
+    .catch((error) => {
+        console.error(
+            "MongoDB connection error:",
+            error
         );
+    });
 
-        console.log("ML response:", response.data);
 
-        // Send ML result back to frontend
-        res.json({
-            success: true,
-            prediction: response.data.prediction,
-            probability: response.data.probability,
-            egfr: response.data.egfr
-        });
+// ============================================
+// PATIENT ROUTES
+// ============================================
 
-    } catch (error) {
-        console.error("ML API Error:", error.message);
+app.use(
+    "/api/patients",
+    patientRoutes
+);
 
-        res.status(500).json({
-            success: false,
-            message: "Unable to get prediction from ML service"
-        });
+
+// ============================================
+// CKD PREDICTION
+// ============================================
+
+app.post(
+    "/api/predict-ckd",
+    async (req, res) => {
+
+        try {
+
+            const response =
+                await axios.post(
+                    "http://localhost:5001/predict",
+                    req.body
+                );
+
+            res.json(response.data);
+
+        } catch (error) {
+
+            console.error(
+                "CKD prediction error:",
+                error.message
+            );
+
+            res.status(500).json({
+                error:
+                    "CKD prediction service unavailable"
+            });
+
+        }
+
     }
-});
-app.listen(5000, () => {
-    console.log("Node server running on http://localhost:5000");
-});
+);
+
+
+// ============================================
+// PROGRESSION PREDICTION
+// ============================================
+
+app.post(
+    "/api/predict-progression",
+    async (req, res) => {
+
+        try {
+
+            const response =
+                await axios.post(
+                    "http://localhost:5001/predict-progression",
+                    req.body
+                );
+
+            res.json(response.data);
+
+        } catch (error) {
+
+            console.error(
+                "Progression prediction error:",
+                error.message
+            );
+
+            res.status(500).json({
+                error:
+                    "Progression prediction service unavailable"
+            });
+
+        }
+
+    }
+);
+
+
+// ============================================
+// SERVER
+// ============================================
+
+app.listen(
+    5000,
+    () => {
+        console.log(
+            "Node backend running on port 5000"
+        );
+    }
+);
