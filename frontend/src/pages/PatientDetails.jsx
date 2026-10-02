@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import {
     Link,
     useNavigate,
     useParams
 } from "react-router-dom";
+import "./PatientDetailsHistory.css";
 
 
 function PatientDetails() {
@@ -23,6 +24,9 @@ function PatientDetails() {
 
     const [history, setHistory] =
         useState([]);
+
+    const [expandedVisitId, setExpandedVisitId] =
+        useState(null);
 
     const [progression, setProgression] =
         useState(null);
@@ -2025,350 +2029,599 @@ function PatientDetails() {
                     eGFR HISTORY
                 ================================================= */}
 
-                <section
-                    className="panel"
-                    style={{
-                        marginTop:
-                            "20px"
-                    }}
-                >
-
-                    <div className="section-title">
-
+                <section className="panel history-panel">
+                    <div className="section-title history-heading">
                         <div>
-
-                            <h2>
-                                eGFR History
-                            </h2>
-
-                            <p
-                                style={{
-                                    color:
-                                        "#718096"
-                                }}
-                            >
-                                Recorded clinical
-                                measurements
-                            </p>
-
+                            <h2>eGFR History</h2>
+                            <p>Recorded clinical measurements</p>
                         </div>
-
                     </div>
 
-
                     {history.length === 0 ? (
-
-                        <div
-                            style={{
-                                padding:
-                                    "30px",
-                                textAlign:
-                                    "center",
-                                color:
-                                    "#718096"
-                            }}
-                        >
-                            No measurements have
-                            been recorded yet.
+                        <div className="history-empty">
+                            No measurements have been recorded yet.
                         </div>
-
                     ) : (
-
-                        <div
-                            style={{
-                                overflowX:
-                                    "auto"
-                            }}
-                        >
-
-                            <table
-                                style={{
-                                    width:
-                                        "100%",
-                                    borderCollapse:
-                                        "collapse"
-                                }}
-                            >
-
+                        <div className="history-table-wrap">
+                            <table className="history-table">
                                 <thead>
-
                                     <tr>
-
-                                        <th>
-                                            Visit
-                                        </th>
-
-                                        <th>
-                                            Date
-                                        </th>
-
-                                        <th>
-                                            eGFR
-                                        </th>
-
-                                        <th>
-                                            Creatinine
-                                        </th>
-
-                                        <th>
-                                            UACR
-                                        </th>
-
-                                        <th>
-                                            BP
-                                        </th>
-
-                                        <th>
-                                            Action
-                                        </th>
-
+                                        <th>Visit</th>
+                                        <th>Date</th>
+                                        <th>eGFR</th>
+                                        <th>Creatinine</th>
+                                        <th>UACR</th>
+                                        <th>BP</th>
+                                        <th>Details</th>
+                                        <th>Action</th>
                                     </tr>
-
                                 </thead>
 
-
                                 <tbody>
+                                    {sortedHistory.map((measurement, index) => {
+                                        const visitId =
+                                            measurement._id || `visit-${index}`;
+                                        const isExpanded =
+                                            expandedVisitId === visitId;
+                                        const explanation =
+                                            measurement.shapExplanation ||
+                                            measurement.explanation ||
+                                            measurement.ckdExplanation ||
+                                            null;
+                                        const shapFeatures =
+                                            Array.isArray(explanation?.features)
+                                                ? explanation.features
+                                                : [];
 
-                                    {sortedHistory.map(
-                                        (
-                                            measurement,
-                                            index
-                                        ) => (
+                                        const additionalLabs =
+                                            measurement.recommendationData ||
+                                            measurement.additionalLabs ||
+                                            {};
 
-                                        <tr
-                                            key={
-                                                measurement._id ||
-                                                index
-                                            }
-                                        >
+                                        const systolic =
+                                            measurement.systolicBP ??
+                                            measurement.BP?.systolic;
+                                        const diastolic =
+                                            measurement.diastolicBP ??
+                                            measurement.BP?.diastolic;
 
-                                            {/* VISIT */}
+                                        const formatValue = (value, suffix = "") =>
+                                            value === null ||
+                                            value === undefined ||
+                                            value === ""
+                                                ? "—"
+                                                : `${value}${suffix}`;
 
-                                            <td>
+                                        const clinicalFeatures = [
+                                            {
+                                                label: "Age",
+                                                value: formatValue(
+                                                    measurement.age ?? patient.age,
+                                                    " years"
+                                                ),
+                                            },
+                                            {
+                                                label: "Gender",
+                                                value:
+                                                    measurement.gender ??
+                                                    patient.gender ??
+                                                    "—",
+                                            },
+                                            {
+                                                label: "Systolic Blood Pressure",
+                                                value: formatValue(systolic, " mmHg"),
+                                            },
+                                            {
+                                                label: "Diastolic Blood Pressure",
+                                                value: formatValue(diastolic, " mmHg"),
+                                            },
+                                            {
+                                                label: "Serum Creatinine",
+                                                value: formatValue(
+                                                    measurement.serumCreatinine,
+                                                    " mg/dL"
+                                                ),
+                                            },
+                                            {
+                                                label: "UACR",
+                                                value: formatValue(
+                                                    measurement.UACR ??
+                                                        measurement.albumin_creatinine_ratio,
+                                                    " mg/g"
+                                                ),
+                                            },
+                                            {
+                                                label: "Diabetes Diagnosed",
+                                                value:
+                                                    measurement.diabetes ??
+                                                    measurement.diabetes_diagnosed ??
+                                                    "—",
+                                            },
+                                        ];
 
-                                                <strong>
-                                                    Visit{" "}
-                                                    {
-                                                        measurement.visitNumber ||
-                                                        index + 1
-                                                    }
-                                                </strong>
+                                        const additionalLabLabels = {
+                                            potassium: "Potassium",
+                                            phosphorus: "Phosphorus",
+                                            hemoglobin: "Hemoglobin",
+                                            bun: "Blood Urea Nitrogen (BUN)",
+                                            bodyWeight: "Body Weight",
+                                            serumAlbumin: "Serum Albumin",
+                                            bicarbonate: "Bicarbonate",
+                                            urineOutput: "Urine Output",
+                                            dialysisStatus: "Dialysis Status",
+                                            edema: "Edema",
+                                            fatigueLevel: "Fatigue Level",
+                                            physicalActivity: "Physical Activity",
+                                            dietQuality: "Diet Quality",
+                                            notes: "Additional Notes",
+                                        };
 
-                                            </td>
+                                        const hasAdditionalLabs =
+                                            Object.entries(additionalLabs).some(
+                                                ([key, value]) =>
+                                                    value !== null &&
+                                                    value !== undefined &&
+                                                    value !== "" &&
+                                                    key in additionalLabLabels
+                                            );
 
-
-                                            {/* DATE */}
-
-                                            <td>
-
-                                                {measurement.date
-                                                    ? new Date(
-                                                        measurement.date
-                                                    ).toLocaleDateString()
-                                                    : "—"}
-
-                                            </td>
-
-
-                                            {/* eGFR */}
-
-                                            <td>
-
-                                                {editingMeasurementId ===
-                                                measurement._id ? (
-
-                                                    <div
-                                                        style={{
-                                                            display:
-                                                                "flex",
-                                                            gap:
-                                                                "6px",
-                                                            alignItems:
-                                                                "center",
-                                                            flexWrap:
-                                                                "wrap"
-                                                        }}
-                                                    >
-
-                                                        <input
-                                                            type="number"
-                                                            step="0.01"
-                                                            min="0"
-                                                            value={
-                                                                editedEGFR
-                                                            }
-                                                            onChange={(e) =>
-                                                                setEditedEGFR(
-                                                                    e.target.value
-                                                                )
-                                                            }
-                                                            style={{
-                                                                width:
-                                                                    "90px"
-                                                            }}
-                                                        />
-
-
-                                                        <button
-                                                            type="button"
-                                                            className="primary-button"
-                                                            onClick={() =>
-                                                                saveEGFR(
-                                                                    measurement._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Save
-                                                        </button>
-
-
-                                                        <button
-                                                            type="button"
-                                                            className="secondary-button"
-                                                            onClick={() => {
-
-                                                                setEditingMeasurementId(
-                                                                    null
-                                                                );
-
-                                                                setEditedEGFR(
-                                                                    ""
-                                                                );
-
-                                                            }}
-                                                        >
-                                                            Cancel
-                                                        </button>
-
-                                                    </div>
-
-                                                ) : (
-
-                                                    <div>
-
+                                        return (
+                                            <Fragment key={visitId}>
+                                                <tr className="history-main-row">
+                                                    <td>
                                                         <strong>
-
-                                                            {
-                                                                measurement.finalEGFR ??
-                                                                measurement.calculatedEGFR ??
-                                                                "—"
-                                                            }
-
+                                                            Visit{" "}
+                                                            {measurement.visitNumber ||
+                                                                index + 1}
                                                         </strong>
+                                                    </td>
 
+                                                    <td>
+                                                        {measurement.date
+                                                            ? new Date(
+                                                                  measurement.date
+                                                              ).toLocaleDateString()
+                                                            : "—"}
+                                                    </td>
 
-                                                        {measurement.calculatedEGFR !==
-                                                            undefined &&
-                                                            measurement.calculatedEGFR !==
-                                                            null && (
-
-                                                                <span
-                                                                    style={{
-                                                                        display:
-                                                                            "block",
-                                                                        fontSize:
-                                                                            "11px",
-                                                                        color:
-                                                                            "#718096"
+                                                    <td>
+                                                        {editingMeasurementId ===
+                                                        measurement._id ? (
+                                                            <div className="history-egfr-edit">
+                                                                <input
+                                                                    type="number"
+                                                                    step="0.01"
+                                                                    min="0"
+                                                                    value={editedEGFR}
+                                                                    onChange={(e) =>
+                                                                        setEditedEGFR(
+                                                                            e.target.value
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <button
+                                                                    type="button"
+                                                                    className="primary-button"
+                                                                    onClick={() =>
+                                                                        saveEGFR(
+                                                                            measurement._id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Save
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    className="secondary-button"
+                                                                    onClick={() => {
+                                                                        setEditingMeasurementId(
+                                                                            null
+                                                                        );
+                                                                        setEditedEGFR(
+                                                                            ""
+                                                                        );
                                                                     }}
                                                                 >
+                                                                    Cancel
+                                                                </button>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="history-egfr-value">
+                                                                <strong>
+                                                                    {measurement.finalEGFR ??
+                                                                        measurement.calculatedEGFR ??
+                                                                        "—"}
+                                                                </strong>
+                                                                {measurement.calculatedEGFR !=
+                                                                    null && (
+                                                                    <small>
+                                                                        Calculated:{" "}
+                                                                        {
+                                                                            measurement.calculatedEGFR
+                                                                        }
+                                                                    </small>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </td>
 
-                                                                    Calculated:{" "}
-                                                                    {
-                                                                        measurement.calculatedEGFR
-                                                                    }
+                                                    <td>
+                                                        {formatValue(
+                                                            measurement.serumCreatinine
+                                                        )}
+                                                    </td>
 
-                                                                </span>
+                                                    <td>
+                                                        {formatValue(
+                                                            measurement.UACR ??
+                                                                measurement.albumin_creatinine_ratio
+                                                        )}
+                                                    </td>
 
-                                                            )}
+                                                    <td>
+                                                        {systolic != null ||
+                                                        diastolic != null
+                                                            ? `${systolic ?? "—"}/${diastolic ?? "—"}`
+                                                            : "—"}
+                                                    </td>
 
-                                                    </div>
+                                                    <td>
+                                                        <button
+                                                            type="button"
+                                                            className="history-details-button"
+                                                            aria-expanded={isExpanded}
+                                                            onClick={() =>
+                                                                setExpandedVisitId(
+                                                                    isExpanded
+                                                                        ? null
+                                                                        : visitId
+                                                                )
+                                                            }
+                                                        >
+                                                            {isExpanded
+                                                                ? "Hide details"
+                                                                : "View details"}
+                                                            <span
+                                                                className={
+                                                                    isExpanded
+                                                                        ? "history-chevron is-open"
+                                                                        : "history-chevron"
+                                                                }
+                                                            >
+                                                                ▾
+                                                            </span>
+                                                        </button>
+                                                    </td>
 
+                                                    <td>
+                                                        {editingMeasurementId !==
+                                                            measurement._id && (
+                                                            <button
+                                                                type="button"
+                                                                className="secondary-button history-edit-button"
+                                                                onClick={() =>
+                                                                    startEGFREdit(
+                                                                        measurement
+                                                                    )
+                                                                }
+                                                            >
+                                                                Edit eGFR
+                                                            </button>
+                                                        )}
+                                                    </td>
+                                                </tr>
+
+                                                {isExpanded && (
+                                                    <tr className="history-details-row">
+                                                        <td colSpan="8">
+                                                            <div className="history-details-content">
+                                                                <div className="history-details-header">
+                                                                    <div>
+                                                                        <h3>
+                                                                            Visit{" "}
+                                                                            {measurement.visitNumber ||
+                                                                                index + 1}{" "}
+                                                                            — Assessment Details
+                                                                        </h3>
+                                                                        <p>
+                                                                            Clinical inputs,
+                                                                            additional lab
+                                                                            values, prediction,
+                                                                            and model explanation
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <section className="history-detail-section">
+                                                                    <h4>
+                                                                        Clinical Features
+                                                                    </h4>
+                                                                    <div className="history-feature-grid">
+                                                                        {clinicalFeatures.map(
+                                                                            (feature) => (
+                                                                                <div
+                                                                                    className="history-feature-card"
+                                                                                    key={
+                                                                                        feature.label
+                                                                                    }
+                                                                                >
+                                                                                    <span>
+                                                                                        {
+                                                                                            feature.label
+                                                                                        }
+                                                                                    </span>
+                                                                                    <strong>
+                                                                                        {
+                                                                                            feature.value
+                                                                                        }
+                                                                                    </strong>
+                                                                                </div>
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                </section>
+
+                                                                <section className="history-detail-section">
+                                                                    <h4>
+                                                                        Additional Lab Values
+                                                                    </h4>
+                                                                    {hasAdditionalLabs ? (
+                                                                        <div className="history-feature-grid">
+                                                                            {Object.entries(
+                                                                                additionalLabs
+                                                                            )
+                                                                                .filter(
+                                                                                    ([key, value]) =>
+                                                                                        key in
+                                                                                            additionalLabLabels &&
+                                                                                        value !==
+                                                                                            null &&
+                                                                                        value !==
+                                                                                            undefined &&
+                                                                                        value !==
+                                                                                            ""
+                                                                                )
+                                                                                .map(
+                                                                                    ([key, value]) => (
+                                                                                        <div
+                                                                                            className="history-feature-card"
+                                                                                            key={key}
+                                                                                        >
+                                                                                            <span>
+                                                                                                {
+                                                                                                    additionalLabLabels[
+                                                                                                        key
+                                                                                                    ]
+                                                                                                }
+                                                                                            </span>
+                                                                                            <strong>
+                                                                                                {typeof value ===
+                                                                                                "boolean"
+                                                                                                    ? value
+                                                                                                        ? "Present"
+                                                                                                        : "Absent"
+                                                                                                    : String(
+                                                                                                          value
+                                                                                                      )}
+                                                                                            </strong>
+                                                                                        </div>
+                                                                                    )
+                                                                                )}
+                                                                        </div>
+                                                                    ) : (
+                                                                        <p className="history-no-data">
+                                                                            No additional lab
+                                                                            values were saved
+                                                                            for this visit.
+                                                                        </p>
+                                                                    )}
+                                                                </section>
+
+                                                                <section className="history-detail-section">
+                                                                    <h4>
+                                                                        CKD Prediction
+                                                                    </h4>
+                                                                    <div className="history-prediction-card">
+                                                                        <div>
+                                                                            <span>
+                                                                                Model Result
+                                                                            </span>
+                                                                            <strong>
+                                                                                {measurement.ckdPrediction ===
+                                                                                1
+                                                                                    ? "Potential CKD indicators detected"
+                                                                                    : measurement.ckdPrediction ===
+                                                                                      0
+                                                                                    ? "No CKD indicators detected by the model"
+                                                                                    : "Not available"}
+                                                                            </strong>
+                                                                        </div>
+                                                                        <div>
+                                                                            <span>
+                                                                                Model Score
+                                                                            </span>
+                                                                            <strong>
+                                                                                {measurement.ckdProbability !=
+                                                                                null
+                                                                                    ? `${measurement.ckdProbability}%`
+                                                                                    : "—"}
+                                                                            </strong>
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
+
+                                                                <section className="history-detail-section">
+                                                                    <h4>
+                                                                        SHAP Explainability
+                                                                    </h4>
+                                                                    <p className="history-shap-intro">
+                                                                        Shows how the model's
+                                                                        input features
+                                                                        influenced this
+                                                                        prediction. SHAP
+                                                                        contributions explain
+                                                                        model behavior, not
+                                                                        medical causation.
+                                                                    </p>
+
+                                                                    {shapFeatures.length > 0 ? (
+                                                                        <div className="history-shap-table-wrap">
+                                                                            <table className="history-shap-table">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>
+                                                                                            Feature
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            Patient
+                                                                                            Value
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            SHAP
+                                                                                            Contribution
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            Feature
+                                                                                            Role
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            Effect on
+                                                                                            CKD
+                                                                                            Prediction
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    {shapFeatures.map(
+                                                                                        (
+                                                                                            feature,
+                                                                                            featureIndex
+                                                                                        ) => {
+                                                                                            const shapValue =
+                                                                                                Number(
+                                                                                                    feature.shap_value
+                                                                                                );
+                                                                                            const positive =
+                                                                                                Number.isFinite(
+                                                                                                    shapValue
+                                                                                                ) &&
+                                                                                                shapValue >=
+                                                                                                    0;
+                                                                                            const name =
+                                                                                                String(
+                                                                                                    feature.feature ??
+                                                                                                        "Feature"
+                                                                                                );
+                                                                                            const normalized =
+                                                                                                name
+                                                                                                    .toLowerCase()
+                                                                                                    .replace(
+                                                                                                        /^.*__/,
+                                                                                                        ""
+                                                                                                    )
+                                                                                                    .replace(
+                                                                                                        /[^a-z0-9]/g,
+                                                                                                        ""
+                                                                                                    );
+                                                                                            const roles =
+                                                                                                {
+                                                                                                    age: "Patient age; relevant to kidney function and CKD risk.",
+                                                                                                    serumcreatinine:
+                                                                                                        "A waste product filtered by the kidneys; its level helps assess kidney function.",
+                                                                                                    uacr: "Measures albumin in urine and helps identify possible kidney damage.",
+                                                                                                    albumincreatinineratio:
+                                                                                                        "Measures albumin in urine and helps identify possible kidney damage.",
+                                                                                                    bpsystolic:
+                                                                                                        "Measures blood pressure when the heart contracts.",
+                                                                                                    bpdiastolic:
+                                                                                                        "Measures blood pressure when the heart rests between beats.",
+                                                                                                    diabetesdiagnosed:
+                                                                                                        "Indicates whether the patient has diagnosed diabetes, a CKD risk factor.",
+                                                                                                    diabetes:
+                                                                                                        "Indicates whether the patient has diagnosed diabetes, a CKD risk factor.",
+                                                                                                    catgenderfemale:
+                                                                                                        "Gender category encoded for the prediction model.",
+                                                                                                    catgendermale:
+                                                                                                        "Gender category encoded for the prediction model.",
+                                                                                                };
+                                                                                            return (
+                                                                                                <tr
+                                                                                                    key={`${name}-${featureIndex}`}
+                                                                                                >
+                                                                                                    <td>
+                                                                                                        <strong>
+                                                                                                            {name}
+                                                                                                        </strong>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        {feature.value ??
+                                                                                                            "—"}
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        {Number.isFinite(
+                                                                                                            shapValue
+                                                                                                        )
+                                                                                                            ? `${
+                                                                                                                  shapValue >
+                                                                                                                  0
+                                                                                                                      ? "+"
+                                                                                                                      : ""
+                                                                                                              }${shapValue.toFixed(
+                                                                                                                  4
+                                                                                                              )}`
+                                                                                                            : "—"}
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        {roles[
+                                                                                                            normalized
+                                                                                                        ] ||
+                                                                                                            "Input feature used by the prediction model."}
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        {Number.isFinite(
+                                                                                                            shapValue
+                                                                                                        ) ? (
+                                                                                                            <span
+                                                                                                                className={
+                                                                                                                    positive
+                                                                                                                        ? "history-shap-positive"
+                                                                                                                        : "history-shap-negative"
+                                                                                                                }
+                                                                                                            >
+                                                                                                                {positive
+                                                                                                                    ? "Pushes toward CKD"
+                                                                                                                    : "Pushes away from CKD"}
+                                                                                                            </span>
+                                                                                                        ) : (
+                                                                                                            "Unavailable"
+                                                                                                        )}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            );
+                                                                                        }
+                                                                                    )}
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <p className="history-no-data">
+                                                                            SHAP explanation
+                                                                            is not available
+                                                                            for this visit.
+                                                                        </p>
+                                                                    )}
+                                                                </section>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 )}
-
-                                            </td>
-
-
-                                            {/* CREATININE */}
-
-                                            <td>
-
-                                                {
-                                                    measurement.serumCreatinine ??
-                                                    "—"
-                                                }
-
-                                            </td>
-
-
-                                            {/* UACR */}
-
-                                            <td>
-
-                                                {
-                                                    measurement.UACR ??
-                                                    "—"
-                                                }
-
-                                            </td>
-
-
-                                            {/* BP */}
-
-                                            <td>
-
-                                                {
-                                                    measurement.systolicBP ??
-                                                    measurement.BP?.systolic ??
-                                                    "—"
-                                                }
-
-                                                /
-
-                                                {
-                                                    measurement.diastolicBP ??
-                                                    measurement.BP?.diastolic ??
-                                                    "—"
-                                                }
-
-                                            </td>
-
-
-                                            {/* ACTION */}
-
-                                            <td>
-
-                                                {editingMeasurementId !==
-                                                    measurement._id && (
-
-                                                    <button
-                                                        type="button"
-                                                        className="secondary-button"
-                                                        onClick={() =>
-                                                            startEGFREdit(
-                                                                measurement
-                                                            )
-                                                        }
-                                                    >
-                                                        Edit eGFR
-                                                    </button>
-
-                                                )}
-
-                                            </td>
-
-                                        </tr>
-
-                                    ))}
-
+                                            </Fragment>
+                                        );
+                                    })}
                                 </tbody>
-
                             </table>
-
                         </div>
-
                     )}
-
                 </section>
 
 

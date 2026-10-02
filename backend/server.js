@@ -47,37 +47,48 @@ app.use(
 // CKD PREDICTION
 // ============================================
 
-app.post(
-    "/api/predict-ckd",
-    async (req, res) => {
+// ============================================
+// CKD PREDICTION
+// ============================================
 
-        try {
+app.post("/api/predict-ckd", async (req, res) => {
+    try {
+        console.log("CKD prediction request:", req.body);
 
-            const response =
-                await axios.post(
-                    "http://localhost:5001/predict",
-                    req.body
-                );
+        const response = await axios.post(
+            "http://localhost:5001/predict",
+            req.body
+        );
 
-            res.json(response.data);
+        console.log("Flask prediction response:", response.data);
 
-        } catch (error) {
+        res.status(response.status).json(response.data);
 
+    } catch (error) {
+        console.error("CKD prediction error:", error.message);
+
+        if (error.response) {
             console.error(
-                "CKD prediction error:",
-                error.message
+                "Flask status:",
+                error.response.status
             );
 
-            res.status(500).json({
-                error:
-                    "CKD prediction service unavailable"
-            });
+            console.error(
+                "Flask error response:",
+                error.response.data
+            );
 
+            return res
+                .status(error.response.status)
+                .json(error.response.data);
         }
 
+        res.status(503).json({
+            error: "Unable to connect to the CKD prediction service.",
+            details: error.message
+        });
     }
-);
-
+});
 
 // ============================================
 // PROGRESSION PREDICTION

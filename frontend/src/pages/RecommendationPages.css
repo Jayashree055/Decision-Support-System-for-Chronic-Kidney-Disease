@@ -1,0 +1,791 @@
+PAGE
+.recommendation-page {
+    min-height: 100vh;
+    background: #ffffff;
+    padding: 24px 20px 40px;
+    box-sizing: border-box;
+    color: #172033;
+}
+
+.recommendation-shell {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* BACK BUTTON */
+.recommendation-back {
+    border: 0;
+    background: transparent;
+    color: #355b91;
+    font-weight: 650;
+    font-size: 14px;
+    padding: 8px 0;
+    margin-bottom: 14px;
+    cursor: pointer;
+}
+
+.recommendation-back:hover {
+    text-decoration: underline;
+}
+
+/* HEADER */
+.recommendation-header {
+    margin: 0 0 20px;
+}
+
+.recommendation-eyebrow {
+    display: inline-block;
+    color: #3974ad;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    margin-bottom: 9px;
+}
+
+.recommendation-header h1 {
+    font-size: 28px;
+    line-height: 1.2;
+    margin: 0;
+    color: #172b4d;
+    font-weight: 750;
+}
+
+.recommendation-header p {
+    margin: 8px 0 0;
+    color: #68778d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* MAIN FORM PANEL */
+.recommendation-panel {
+    background: #ffffff;
+    border: 1px solid #d3d8df;
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* FORM TITLE */
+.recommendation-section-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.recommendation-section-heading h2 {
+    font-size: 18px;
+    color: #172033;
+    margin: 0 0 5px;
+    font-weight: 600;
+}
+
+.recommendation-section-heading p {
+    font-size: 12px;
+    color: #7c8796;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.optional-badge {
+    white-space: nowrap;
+    background: #edf6ff;
+    color: #356b9e;
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* NUMBERED SECTIONS */
+.optional-section {
+    margin-bottom: 18px;
+}
+
+.optional-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #172033;
+    margin: 0 0 12px;
+}
+
+/* FOUR-COLUMN GRID LIKE THE SCREENSHOT */
+.recommendation-form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px 12px;
+}
+
+/* FIELD */
+.recommendation-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    color: #718096;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.recommendation-field span {
+    line-height: 1.4;
+}
+
+.recommendation-field small {
+    font-size: 10px;
+    color: #9aa4b2;
+    font-weight: 400;
+    margin-left: 3px;
+}
+
+/* INPUTS */
+.recommendation-field input,
+.recommendation-field select,
+.recommendation-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #e0e4e9;
+    border-radius: 4px;
+    background: #f0f2f4;
+    color: #26364e;
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.recommendation-field input,
+.recommendation-field select {
+    height: 34px;
+}
+
+.recommendation-field textarea {
+    resize: vertical;
+    min-height: 75px;
+}
+
+.recommendation-field input:focus,
+.recommendation-field select:focus,
+.recommendation-field textarea:focus {
+    border-color: #548ac5;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(84, 138, 197, 0.12);
+}
+
+/* FULL-WIDTH FIELD */
+.recommendation-field-wide {
+    grid-column: 1 / -1;
+}
+
+/* FORM FOOTER */
+.recommendation-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-top: 1px solid #edf0f5;
+    margin-top: 18px;
+    padding-top: 14px;
+}
+
+.recommendation-form-footer p {
+    max-width: 600px;
+    font-size: 11px;
+    color: #7b8798;
+    line-height: 1.5;
+}
+
+/* SUBMIT BUTTON */
+.recommendation-submit {
+    border: 1px solid #d3d8df;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #356b9e;
+    padding: 10px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.recommendation-submit:hover {
+    background: #edf6ff;
+    border-color: #9bbfe3;
+}
+
+.recommendation-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* ERROR */
+.recommendation-error {
+    background: #fff1f0;
+    border: 1px solid #ffc9c5;
+    color: #a52c25;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+/* SAFETY NOTICE */
+.recommendation-safety {
+    margin: 16px 2px 0;
+    color: #778397;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* LAUNCH CARD */
+.recommendation-launch-card {
+    margin: 20px 0;
+    background: #f7fbff;
+    border: 1px solid #d9e9f8;
+    border-radius: 14px;
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.recommendation-launch-card h2 {
+    margin: 0 0 6px;
+    color: #1b3154;
+    font-size: 18px;
+}
+
+.recommendation-launch-card p {
+    margin: 0;
+    color: #718096;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.recommendation-launch-button {
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 9px;
+    background: #2463a6;
+    color: white;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.recommendation-launch-button:hover {
+    background: #194f8b;
+}
+
+/* RESULTS PAGE */
+.rec-results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.rec-result-card {
+    background: #ffffff;
+    border: 1px solid #e2e9f1;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(30, 55, 90, 0.045);
+    min-width: 0;
+}
+
+.rec-card-topline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #edf1f6;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+}
+
+.rec-card-topline h2 {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #23446e;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.rec-card-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #4d91c9;
+    flex-shrink: 0;
+}
+
+.rec-result-content {
+    font-size: 13px;
+    line-height: 1.75;
+    color: #435168;
+    overflow-wrap: anywhere;
+}
+
+.rec-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.rec-list li {
+    padding-left: 3px;
+    margin: 0 0 7px;
+}
+
+.rec-list li::marker {
+    color: #4d91c9;
+}
+
+.rec-muted {
+    color: #929daf;
+    font-style: italic;
+}
+
+.rec-nested {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rec-nested-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px 12px;
+    background: #f7f9fc;
+    border: 1px solid #edf1f6;
+    border-radius: 8px;
+}
+
+.rec-nested-row strong {
+    font-size: 11px;
+    color: #5a6b83;
+    text-transform: capitalize;
+}
+
+.rec-result-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* TABLET */
+@media (max-width: 1000px) {
+    .recommendation-form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+    .recommendation-page {
+        padding: 20px 13px 32px;
+    }
+
+    .recommendation-header h1 {
+        font-size: 25px;
+    }
+
+    .recommendation-panel {
+        padding: 14px;
+    }
+
+    .recommendation-form-grid,
+    .rec-results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recommendation-field-wide {
+        grid-column: auto;
+    }
+
+    .recommendation-section-heading,
+    .recommendation-form-footer,
+    .recommendation-launch-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .recommendation-submit,
+    .recommendation-launch-button {
+        width: 100%;
+    }
+
+    .recommendation-form-footer {
+        align-items: stretch;
+    }
+}
+/* Left-align recommendation page content */
+.rec-page,
+.rec-container,
+.rec-page-header,
+.rec-section,
+.rec-section h2,
+.rec-section h3,
+.rec-food-column,
+.rec-meal-framework,
+.rec-accordion,
+.rec-accordion-body,
+.rec-exercise-guidance,
+.rec-weekly,
+.rec-clinical-grid {
+    text-align: left;
+}
+
+/* Keep nutrition cards left-aligned */
+.rec-target-card {
+    text-align: left;
+}
+
+/* Keep lists aligned to the left */
+.rec-list {
+    text-align: left;
+    padding-left: 22px;
+}
+
+/* Keep weekly table content left-aligned */
+.rec-weekly-table th,
+.rec-weekly-table td {
+    text-align: left;
+}
+/* =========================================
+   CKD ASSESSMENT FORM
+========================================= */
+
+.ckd-assessment-form {
+    width: 100%;
+}
+
+.ckd-assessment-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 24px;
+    width: 100%;
+}
+
+.ckd-assessment-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.ckd-assessment-form .form-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.ckd-assessment-form .form-field input,
+.ckd-assessment-form .form-field select {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    border: 1px solid #d5deeb;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #1e293b;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ckd-assessment-form .form-field input:focus,
+.ckd-assessment-form .form-field select:focus {
+    border-color: #4057d6;
+    box-shadow: 0 0 0 3px rgba(64, 87, 214, 0.12);
+}
+
+/* Center the Run Assessment button */
+.ckd-assessment-form > .primary-button {
+    display: block;
+    min-width: 220px;
+    min-height: 46px;
+    margin: 26px auto 0;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 9px;
+    background: #4057d6;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.ckd-assessment-form > .primary-button:hover:not(:disabled) {
+    background: #3046bd;
+    transform: translateY(-1px);
+}
+
+.ckd-assessment-form > .primary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   CKD ASSESSMENT RESULT CARD
+========================================= */
+
+.ckd-result-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr) auto;
+    align-items: center;
+    gap: 28px;
+    width: 100%;
+    padding: 28px 32px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #dce4f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(30, 55, 90, 0.04);
+}
+
+/* Prediction text */
+.ckd-result-card > div:first-child {
+    min-width: 0;
+}
+
+.ckd-result-card .card-label {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #4057d6;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.ckd-result-card h2 {
+    margin: 0 0 12px;
+    color: #172554;
+    font-size: 23px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.ckd-result-card p {
+    margin: 0;
+    color: #475569;
+    font-size: 15px;
+}
+
+.ckd-result-card p strong {
+    color: #172554;
+    font-size: 17px;
+}
+
+
+/* =========================================
+   CALCULATED AND FINAL eGFR
+========================================= */
+
+.ckd-egfr-result {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+    width: 100%;
+}
+
+.ckd-egfr-result > label {
+    display: block;
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Calculated eGFR value */
+.ckd-egfr-result > strong {
+    display: block;
+    margin: 0 0 8px !important;
+    color: #172554;
+    font-size: 24px !important;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+/* Final eGFR label */
+.ckd-egfr-result > label:nth-of-type(2) {
+    margin-top: 4px;
+}
+
+/* Final eGFR input and Edit/Done button row */
+.ckd-egfr-result > div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    margin-top: 0 !important;
+}
+
+/* Fix the black input */
+.ckd-egfr-result .final-egfr-input {
+    display: block;
+    width: 150px;
+    max-width: 150px !important;
+    min-height: 42px;
+    padding: 9px 12px;
+    box-sizing: border-box;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff !important;
+    color: #1e293b !important;
+    font-size: 15px;
+    outline: none;
+    color-scheme: light;
+}
+
+.ckd-egfr-result .final-egfr-input:focus {
+    border-color: #4057d6;
+    box-shadow: 0 0 0 3px rgba(64, 87, 214, 0.12);
+}
+
+/* Read-only input */
+.ckd-egfr-result .final-egfr-input:read-only {
+    background: #f8fafc !important;
+    color: #475569 !important;
+    cursor: default;
+}
+
+/* Edit and Done buttons */
+.ckd-egfr-result .secondary-button,
+.ckd-egfr-result .primary-button {
+    min-height: 42px;
+    padding: 9px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ckd-egfr-result .secondary-button {
+    background: #eef2ff;
+    color: #4057d6;
+}
+
+.ckd-egfr-result .secondary-button:hover {
+    background: #e0e7ff;
+}
+
+.ckd-egfr-result .primary-button {
+    background: #4057d6;
+    color: #ffffff;
+}
+
+.ckd-egfr-result .primary-button:hover {
+    background: #3046bd;
+}
+
+/* eGFR note */
+.ckd-egfr-result small {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   SAVE VISIT BUTTON
+========================================= */
+
+.ckd-result-card > div:last-child {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.ckd-result-card > div:last-child .primary-button {
+    min-width: 135px;
+    min-height: 44px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #4057d6;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.ckd-result-card > div:last-child .primary-button:hover:not(:disabled) {
+    background: #3046bd;
+}
+
+.ckd-result-card > div:last-child .primary-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   RESPONSIVE LAYOUT
+========================================= */
+
+@media (max-width: 1000px) {
+    .ckd-result-card {
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 1fr);
+        gap: 24px;
+    }
+
+    .ckd-result-card > div:last-child {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 650px) {
+    .ckd-assessment-form .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .ckd-assessment-form > .primary-button {
+        width: 100%;
+        margin-top: 22px;
+    }
+
+    .ckd-result-card {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        padding: 22px 18px;
+    }
+
+    .ckd-result-card h2 {
+        font-size: 20px;
+    }
+
+    .ckd-egfr-result {
+        align-items: flex-start;
+    }
+
+    .ckd-result-card > div:last-child {
+        grid-column: auto;
+        justify-content: stretch;
+    }
+
+    .ckd-result-card > div:last-child .primary-button {
+        width: 100%;
+    }
+}

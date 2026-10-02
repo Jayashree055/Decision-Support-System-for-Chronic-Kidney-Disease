@@ -1162,3 +1162,135 @@ label {
     }
 
 }
+
+/* SHAP explanation card */
+.shap-explanation {
+    width: 100%;
+    margin: 24px 0;
+    padding: 24px 28px;
+    background: #ffffff;
+    border: 1px solid #dce3ef;
+    border-radius: 14px;
+    box-sizing: border-box;
+}
+
+/* Heading */
+.shap-explanation h3 {
+    margin: 0 0 10px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #172554;
+}
+
+/* Description */
+.shap-description {
+    margin: 0 0 22px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #64748b;
+}
+
+/* Horizontal scrolling on smaller screens */
+.shap-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Table */
+.shap-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 14px;
+    color: #334155;
+}
+
+/* Column widths */
+.shap-table th:nth-child(1) { width: 18%; }
+.shap-table th:nth-child(2) { width: 10%; }
+.shap-table th:nth-child(3) { width: 13%; }
+.shap-table th:nth-child(4) { width: 37%; }
+.shap-table th:nth-child(5) { width: 22%; }
+
+/* Header */
+.shap-table thead th {
+    padding: 14px 16px;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #dbe3ef;
+}
+
+/* Table cells */
+.shap-table tbody td {
+    padding: 15px 16px;
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.55;
+    border-bottom: 1px solid #e2e8f0;
+    overflow-wrap: anywhere;
+}
+
+/* Feature names */
+.shap-table tbody td:first-child {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Patient values and SHAP contributions */
+.shap-table tbody td:nth-child(2),
+.shap-table tbody td:nth-child(3) {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Alternating rows */
+.shap-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+/* Hover effect */
+.shap-table tbody tr:hover {
+    background: #eff6ff;
+}
+
+/* Prediction effect */
+.shap-effect-positive {
+    color: #c2410c;
+    font-weight: 600;
+}
+
+.shap-effect-negative {
+    color: #15803d;
+    font-weight: 600;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+    .shap-explanation {
+        padding: 18px 14px;
+    }
+
+    .shap-explanation h3 {
+        font-size: 20px;
+    }
+
+    .shap-description {
+        font-size: 13px;
+    }
+
+    .shap-table {
+        font-size: 13px;
+    }
+
+    .shap-table th,
+    .shap-table td {
+        padding: 11px;
+    }
+}

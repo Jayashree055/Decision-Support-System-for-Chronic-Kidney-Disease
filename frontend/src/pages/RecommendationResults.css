@@ -1,0 +1,157 @@
+/* Recommendation page — layout inspired by the supplied reference screenshots */
+.rec-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 26px 30px 48px;
+  background: #fff;
+  color: #263449;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.rec-container { width: 100%; max-width: 1400px; margin: 0 auto; }
+.rec-back {
+  border: 0; background: transparent; color: #315bd4; cursor: pointer;
+  padding: 4px 0 16px; font-size: 14px; font-weight: 600;
+}
+.rec-back:hover { text-decoration: underline; }
+.rec-page-header { margin: 0 0 28px; }
+.rec-eyebrow {
+  display: block; color: #3564d4; font-size: 12px; font-weight: 700;
+  letter-spacing: 1.2px; margin-bottom: 7px;
+}
+.rec-page-header h1 { margin: 0; font-size: 30px; line-height: 1.3; color: #1f2d43; }
+.rec-page-header p { margin: 7px 0 0; color: #64748b; font-size: 15px; line-height: 1.6; }
+.rec-section {
+  border: 1px solid #e1e7ef; border-radius: 11px; background: #fff;
+  padding: 25px 30px; margin: 0 0 24px; min-width: 0;
+}
+.rec-section > h2 { margin: 0 0 20px; color: #29384d; font-size: 23px; font-weight: 700; line-height: 1.35; }
+.rec-section-description { margin: -8px 0 18px; color: #64748b; font-size: 15px; line-height: 1.6; }
+.rec-target-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.rec-target-card { min-width: 0; border-radius: 10px; padding: 22px 20px; }
+.rec-target-card h3 { margin: 0 0 20px; font-size: 16px; font-weight: 600; }
+.rec-target-value { margin: 0 0 18px; font-size: 19px; line-height: 1.5; overflow-wrap: anywhere; }
+.rec-target-note { margin: 0; font-size: 14px; line-height: 1.6; font-style: italic; }
+.rec-blue { background: #eaf2ff; color: #28518d; }
+.rec-yellow { background: #fffdec; color: #6c5b16; }
+.rec-green { background: #edf8ef; color: #28733c; }
+.rec-note { margin: 14px 0 0; padding: 11px 14px; border-left: 3px solid #9ab7e9; background: #f7faff; color: #53647c; font-size: 13px; line-height: 1.6; }
+.rec-food-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px; margin-top: 32px; }
+.rec-food-column { min-width: 0; }
+.rec-food-column h3, .rec-meal-framework h3, .rec-weekly h3 {
+  margin: 0 0 17px; color: #29384d; font-size: 22px; font-weight: 700; line-height: 1.35;
+}
+.rec-list { margin: 0; padding-left: 22px; }
+.rec-list > li { padding-left: 5px; margin: 0 0 23px; font-size: 15px; line-height: 1.65; }
+.rec-list > li:last-child { margin-bottom: 0; }
+.rec-list > li::marker { color: #374151; }
+.rec-item-content { display: inline; }
+.rec-item-content p { margin: 3px 0 0; }
+.rec-item-content p + p { margin-top: 5px; }
+.rec-muted { color: #64748b; font-size: 14px; font-style: italic; line-height: 1.6; }
+.rec-meal-framework { margin-top: 36px; }
+.rec-meal-framework h3 { margin-bottom: 18px; }
+.rec-meal-list > li { margin-bottom: 7px; }
+.rec-two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.rec-two-column .rec-section { height: fit-content; }
+.rec-accordion-list { display: flex; flex-direction: column; gap: 19px; }
+.rec-accordion { border: 1px solid #d6dbe2; border-radius: 10px; overflow: hidden; background: #fff; }
+.rec-accordion summary {
+  display: flex; align-items: center; min-height: 47px; padding: 11px 17px;
+  background: #f7f8fa; color: #29384d; cursor: pointer; font-size: 14px; line-height: 1.5;
+  list-style: none;
+}
+.rec-accordion summary::-webkit-details-marker { display: none; }
+.rec-accordion summary::before { content: "›"; color: #315bd4; font-size: 22px; margin-right: 15px; line-height: 1; transform: rotate(0deg); }
+.rec-accordion[open] summary::before { content: "⌄"; font-size: 18px; }
+.rec-accordion[open] summary { border-bottom: 1px solid #d6dbe2; }
+.rec-accordion-body { padding: 20px 21px; color: #334155; font-size: 15px; line-height: 1.7; }
+.rec-accordion-body p { margin: 0 0 20px; }
+.rec-accordion-body p:last-child { margin-bottom: 0; }
+.rec-exercise-grid { display: grid; grid-template-columns: minmax(260px, .72fr) minmax(0, 1.5fr); gap: 28px; align-items: start; }
+.rec-exercise-guidance { min-width: 0; font-size: 15px; line-height: 1.7; }
+.rec-exercise-guidance p { margin: 0 0 19px; }
+.rec-weekly { min-width: 0; }
+.rec-weekly h3 { font-size: 22px; margin: 0 0 18px; }
+.rec-table-wrap { width: 100%; overflow-x: auto; }
+.rec-weekly-table { width: 100%; border-collapse: collapse; font-size: 14px; color: #334155; }
+.rec-weekly-table th, .rec-weekly-table td { border: 1px solid #e1e5eb; padding: 8px 10px; text-align:left; vertical-align: top; line-height: 1.5; }
+.rec-weekly-table th { color: #64748b; font-weight: 500; background: #fff; }
+.rec-weekly-table td:first-child { width: 155px; white-space: nowrap; }
+.rec-weekly-table .rec-list { padding-left: 18px; }
+.rec-weekly-table .rec-list > li { margin-bottom: 4px; }
+.rec-clinical-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.rec-clinical-grid > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 13px 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; }
+.rec-clinical-grid span { color: #64748b; font-size: 12px; }
+.rec-clinical-grid strong { color: #29384d; font-size: 14px; overflow-wrap: anywhere; }
+.rec-object { display: flex; flex-direction: column; gap: 6px; }
+.rec-object-row { display: grid; grid-template-columns: minmax(90px, 35%) 1fr; gap: 10px; font-size: 14px; line-height: 1.5; }
+.rec-object-row > b { color: #475569; }
+.rec-disclaimer { margin: 2px 2px 0; padding-top: 15px; border-top: 1px solid #d9dee7; color: #64748b; font-size: 12px; line-height: 1.65; }
+@media (max-width: 950px) {
+  .rec-page { padding: 22px 20px 40px; }
+  .rec-target-grid { gap: 13px; }
+  .rec-target-card { padding: 18px; }
+  .rec-exercise-grid { grid-template-columns: 1fr; }
+  .rec-clinical-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 650px) {
+  .rec-page { padding: 16px 12px 30px; }
+  .rec-page-header h1 { font-size: 25px; }
+  .rec-section { padding: 19px 16px; margin-bottom: 18px; }
+  .rec-section > h2 { font-size: 20px; }
+  .rec-target-grid, .rec-food-grid, .rec-two-column { grid-template-columns: 1fr; }
+  .rec-food-grid { gap: 25px; margin-top: 26px; }
+  .rec-food-column h3, .rec-meal-framework h3, .rec-weekly h3 { font-size: 19px; }
+  .rec-clinical-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rec-weekly-table { min-width: 470px; }
+}
+.rec-item-content {
+    display: inline;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.rec-item-content strong {
+    color: #29384d;
+    font-weight: 700;
+}
+
+.rec-list > li {
+    padding-left: 5px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.65;
+}
+.rec-report-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.rec-download-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #1a5276;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.rec-download-button:hover:not(:disabled) {
+  background: #154360;
+}
+
+.rec-download-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.rec-download-error {
+  color: #dc2626;
+  font-size: 14px;
+}
